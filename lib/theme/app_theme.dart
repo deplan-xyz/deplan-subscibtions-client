@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 ThemeData getAppTheme() {
   return ThemeData(
     fontFamily: 'SF Pro Display',
+    fontFamilyFallback: const ['Gilroy'],
     scaffoldBackgroundColor: COLOR_WHITE,
     hoverColor: Colors.transparent,
     colorScheme: const ColorScheme.light(
-      primary: COLOR_ALMOST_BLACK,
+      primary: TEXT_MAIN,
       secondary: COLOR_WHITE,
       surfaceTint: Colors.transparent,
     ),
@@ -21,7 +22,7 @@ ThemeData getAppTheme() {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: COLOR_ALMOST_BLACK,
+        backgroundColor: TEXT_MAIN,
         foregroundColor: COLOR_WHITE,
         visualDensity: const VisualDensity(vertical: 0),
         shape: RoundedRectangleBorder(
@@ -38,8 +39,8 @@ ThemeData getAppTheme() {
     ),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
-      iconTheme: IconThemeData(color: COLOR_ALMOST_BLACK),
-      foregroundColor: COLOR_ALMOST_BLACK,
+      iconTheme: IconThemeData(color: TEXT_MAIN),
+      foregroundColor: TEXT_MAIN,
       backgroundColor: COLOR_WHITE,
       elevation: 0,
       titleSpacing: 20,
@@ -47,51 +48,51 @@ ThemeData getAppTheme() {
         fontWeight: FontWeight.bold,
         fontFamily: 'SF Pro Display',
         fontSize: 18,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
     ),
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-        fontSize: 36,
+        fontSize: 32,
         fontWeight: FontWeight.bold,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
         height: 1.2,
       ),
       headlineMedium: TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.bold,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       headlineSmall: TextStyle(
         fontSize: 21,
         fontWeight: FontWeight.bold,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       displayLarge: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w300,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       displayMedium: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w300,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       bodyLarge: TextStyle(
         fontSize: 18,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       bodyMedium: TextStyle(
         fontSize: 16,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       bodySmall: TextStyle(
         fontSize: 14,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
       labelMedium: TextStyle(
         fontSize: 12,
-        color: COLOR_ALMOST_BLACK,
+        color: TEXT_MAIN,
       ),
     ),
     inputDecorationTheme: const InputDecorationTheme(
@@ -125,7 +126,6 @@ ThemeData getAppTheme() {
 
 const Color COLOR_WHITE = Color(0xffffffff);
 const Color COLOR_BLACK = Color(0xff000000);
-const Color COLOR_ALMOST_BLACK = Color(0xff11243E);
 const Color COLOR_LIGHT_GRAY = Color(0xffEEF0F3);
 const Color COLOR_LIGHT_GRAY2 = Color(0xffC4C4C4);
 const Color COLOR_LIGHT_GRAY3 = Color(0xffe2e2e8);
@@ -147,3 +147,6 @@ const Color APP_BODY_BG = COLOR_WHITE;
 const Color BTN_BLUE_BG = COLOR_BLUE;
 const Color BTN_GRAY_GB = COLOR_LIGHT_GRAY3;
 const Color BTN_GREEN_BG = COLOR_GREEN;
+
+const Color TEXT_MAIN = Color(0xff11243E);
+const Color TEXT_SECONDARY = Color(0xff6B6B6B);
