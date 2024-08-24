@@ -17,6 +17,9 @@ class AppEntryPoint extends StatelessWidget {
             const Text(
                 'On this screen we will check the auth and if user authenticated - will be redirected to the dashboard screen of not - SignIn screen'),
             const SizedBox(height: 20),
+            const Text(
+                'If user signed In but came from the outside for the subscription - redirect to the confirm_subscription screen'),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
