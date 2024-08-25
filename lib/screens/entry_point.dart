@@ -36,6 +36,14 @@ class AppEntryPoint extends StatelessWidget {
                         context, Routes.subscriptionsHome);
                   },
                   child: const Text('Subsciptions'),
+                ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, Routes.confirmSubscription);
+                  },
+                  child: const Text('Confirm Subscription'),
                 )
               ],
             )

@@ -37,6 +37,7 @@ class SignInBody extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
+                fontFamily: 'SF Pro Display',
                 color: TEXT_SECONDARY,
               ),
             ),

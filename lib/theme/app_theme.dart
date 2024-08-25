@@ -56,6 +56,7 @@ ThemeData getAppTheme() {
         fontSize: 32,
         fontWeight: FontWeight.bold,
         color: TEXT_MAIN,
+        fontFamily: 'SF Pro Display',
         height: 1.2,
       ),
       headlineMedium: TextStyle(
@@ -132,21 +133,10 @@ const Color COLOR_LIGHT_GRAY3 = Color(0xffe2e2e8);
 const Color COLOR_DISABLED_GRAY3 = Color(0xff87899B);
 const Color COLOR_GRAY = Color(0xff87899B);
 const Color COLOR_GRAY2 = Color(0xffB8BFCA);
-const Color COLOR_GREEN = Color(0xff0E9E17);
-const Color COLOR_BLUE = Color(0xff1D55E4);
-const Color COLOR_RED = Color(0xffD02626);
-const Color COLOR_RED2 = Color(0xffFF3A44);
-const Color COLOR_ORANGE = Color(0xffECA240);
-const Color COLOR_CORAL = Color(0xff3EA592);
-const Color COLOR_PURPLE = Color(0xff934BAE);
-const Color COLOR_PURPLE2 = Color(0xff7B448C);
-const Color COLOR_PINK = Color(0xffDE68A5);
-const Color COLOR_LIGHT_GREEN = Color(0xff3EA592);
 
 const Color APP_BODY_BG = COLOR_WHITE;
-const Color BTN_BLUE_BG = COLOR_BLUE;
 const Color BTN_GRAY_GB = COLOR_LIGHT_GRAY3;
-const Color BTN_GREEN_BG = COLOR_GREEN;
 
 const Color TEXT_MAIN = Color(0xff11243E);
 const Color TEXT_SECONDARY = Color(0xff6B6B6B);
+const Color TEXT_SECONDARY_ACCENT = Color(0xff88919E);
