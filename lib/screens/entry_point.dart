@@ -20,7 +20,7 @@ class AppEntryPoint extends StatelessWidget {
             const Text(
                 'If user signed In but came from the outside for the subscription - redirect to the confirm_subscription screen'),
             const SizedBox(height: 20),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
@@ -29,19 +29,17 @@ class AppEntryPoint extends StatelessWidget {
                   },
                   child: const Text('Sign In'),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.subscriptionsHome);
+                    Navigator.pushNamed(context, Routes.subscriptionsHome);
                   },
                   child: const Text('Subsciptions'),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.confirmSubscription);
+                    Navigator.pushNamed(context, Routes.confirmSubscription);
                   },
                   child: const Text('Confirm Subscription'),
                 )

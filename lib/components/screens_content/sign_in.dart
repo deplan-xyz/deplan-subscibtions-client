@@ -1,3 +1,4 @@
+import 'package:deplan_subscriptions_client/components/apple_sign_in_button.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -45,16 +46,7 @@ class SignInBody extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
               height: 52,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.apple, size: 24),
-                label: const Text("Sign in with Apple"),
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  textStyle: const TextStyle(fontSize: 18),
-                ),
-              ),
+              child: const AppleSignInButton(),
             ),
           ],
         )
