@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAIKXl4sQK51p0pm7zsf9WX4BB4148h7NU',
-    appId: '1:913815120789:ios:39e0d0b62373a22602249c',
+    appId: '1:913815120789:ios:e14f4dac7ce22d8002249c',
     messagingSenderId: '913815120789',
     projectId: 'deplan-subscriptions',
     storageBucket: 'deplan-subscriptions.appspot.com',
-    iosBundleId: 'com.example.deplanSubscriptionsClient.RunnerTests',
+    iosBundleId: 'com.relonch.deplan-subscriptions',
   );
 
 }
