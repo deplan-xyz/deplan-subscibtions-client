@@ -16,7 +16,7 @@ void main() async {
     // redirect to the home screen if the user is authenticated
   });
 
-  // if (kDebugMode) {
+  // if (kDebugMode && kIsWeb) {
   //   try {
   //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   //   } catch (e) {
