@@ -23,9 +23,7 @@ class AppleSignInButton extends StatelessWidget {
     }
 
     return ElevatedButton.icon(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color?>(Colors.black),
-      ),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
       onPressed: () async {
         try {
           final credentials = await signInWithApple();
