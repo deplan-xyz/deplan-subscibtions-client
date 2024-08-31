@@ -15,7 +15,7 @@ class SelectedDate {
 List<SelectedDate> getSurroundingMonths(DateTime selectedDate) {
   List<SelectedDate> surroundingMonths = [];
   DateTime currentDate = selectedDate;
-  for (int i = -2; i <= 2; i++) {
+  for (int i = -2; i <= 1; i++) {
     DateTime newDate = DateTime(currentDate.year, currentDate.month + i);
     surroundingMonths.add(SelectedDate(formatMonthYear(newDate), newDate));
   }
