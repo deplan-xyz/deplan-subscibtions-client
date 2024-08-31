@@ -17,13 +17,13 @@ void main() async {
     // redirect to the home screen if the user is authenticated
   });
 
-  if (kDebugMode && kIsWeb) {
-    try {
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // if (kDebugMode && kIsWeb) {
+  //   try {
+  //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   runApp(const App());
 }

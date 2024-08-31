@@ -18,38 +18,36 @@ class SignInBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 30),
-        Stack(
-          alignment: Alignment.center,
-          children: [Image.asset('assets/images/subsription-logo.png')],
-        ),
+        Expanded(child: Image.asset('assets/images/subsription-logo.png')),
         const SizedBox(height: 30),
         Text(
           "Pay for how much you actually use your subscriptions",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineLarge,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
-        const SizedBox(height: 20),
-        const Spacer(),
-        Column(
-          children: [
-            const Text(
-              "Control all your subscriptions in one place",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'SF Pro Display',
-                color: TEXT_SECONDARY,
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text(
+                "Control all your subscriptions in one place",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'SF Pro Display',
+                  color: TEXT_SECONDARY,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: 52,
-              child: const AppleSignInButton(),
-            ),
-          ],
-        )
+              const SizedBox(height: 20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 52,
+                child: const AppleSignInButton(),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
