@@ -64,12 +64,16 @@ class SubsciptionsHome extends StatelessWidget {
             ),
             // Empty state message
             SubscriptionCard(
-                appName: 'App',
-                planPrice: 0,
-                userPays: 0,
-                usagePercentage: 0,
-                avatar: '',
-                isEmpty: true),
+              appName: 'App',
+              planPrice: 0,
+              userPays: 0,
+              usagePercentage: 0,
+              avatar: '',
+              isEmpty: true,
+            ),
+            const SizedBox(
+              height: 45,
+            ),
             const Center(
               child: Text(
                 "You don’t have any subscription yet",
