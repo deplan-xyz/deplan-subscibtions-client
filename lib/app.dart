@@ -1,5 +1,6 @@
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
 import 'package:deplan_subscriptions_client/screens/entry_point.dart';
@@ -21,6 +22,11 @@ class App extends StatelessWidget {
       title: 'DePlan Subscriptions',
       debugShowCheckedModeBanner: false,
       theme: getAppTheme(),
+      localizationsDelegates: const [
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
       initialRoute:
           isUserAuthenticated ? Routes.subscriptionsHome : Routes.entryPoint,
       routes: {

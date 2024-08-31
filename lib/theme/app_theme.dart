@@ -122,6 +122,16 @@ ThemeData getAppTheme() {
       contentPadding: EdgeInsets.only(bottom: 10),
       isDense: true,
     ),
+    //Changing the global dialog border
+    dialogTheme: const DialogTheme(
+      backgroundColor: Colors.amber,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        ),
+        side: BorderSide(color: Colors.red),
+      ),
+    ),
   );
 }
 
