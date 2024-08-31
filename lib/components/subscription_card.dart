@@ -89,7 +89,7 @@ class SubscriptionCard extends StatelessWidget {
                           ),
                           Text(
                             isEmpty
-                                ? '--'
+                                ? '----'
                                 : '\$${planPrice.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 20,
@@ -113,7 +113,9 @@ class SubscriptionCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            isEmpty ? '--' : '\$${userPays.toStringAsFixed(2)}',
+                            isEmpty
+                                ? '----'
+                                : '\$${userPays.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'SF Pro Display',

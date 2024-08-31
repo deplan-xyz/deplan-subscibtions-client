@@ -1,5 +1,6 @@
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
-import 'package:deplan_subscriptions_client/utilities/datetime.dart';
+import 'package:deplan_subscriptions_client/components/subscription_card.dart';
+import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class SubsciptionsHome extends StatelessWidget {
@@ -55,51 +56,32 @@ class SubsciptionsHome extends StatelessWidget {
             const Text(
               "Usage of your subscriptions",
               style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontSize: 24,
+                fontFamily: 'SF Pro Display',
+                fontWeight: FontWeight.w600,
+                color: TEXT_MAIN,
               ),
             ),
             // Empty state message
-            const Expanded(
-              child: Center(
-                child: Text(
-                  "You don’t have any subscription yet",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
+            SubscriptionCard(
+                appName: 'App',
+                planPrice: 0,
+                userPays: 0,
+                usagePercentage: 0,
+                avatar: '',
+                isEmpty: true),
+            const Center(
+              child: Text(
+                "You don’t have any subscription yet",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey,
                 ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildTimePeriod(String label, {required bool isActive}) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            color: isActive ? Colors.purple : Colors.black,
-            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-        if (isActive)
-          Container(
-            margin: const EdgeInsets.only(top: 4),
-            width: 6,
-            height: 6,
-            decoration: const BoxDecoration(
-              color: Colors.purple,
-              shape: BoxShape.circle,
-            ),
-          ),
-      ],
     );
   }
 }
