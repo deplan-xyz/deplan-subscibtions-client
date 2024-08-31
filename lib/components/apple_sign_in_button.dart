@@ -8,6 +8,12 @@ class AppleSignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    navigateToSubscriptionsHome() {
+      Navigator.pushNamed(context, Routes.subscriptionsHome);
+    }
+
+    ;
+
     Future<UserCredential> signInWithApple() async {
       final appleProvider = OAuthProvider("apple.com")
         ..addScope('email')
@@ -26,13 +32,8 @@ class AppleSignInButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
       onPressed: () async {
         try {
-          final credentials = await signInWithApple();
-          print({
-            'user': credentials.user,
-            'additionalUserInfo': credentials.additionalUserInfo,
-          });
-          // go to subscriptions home route
-          Navigator.pushNamed(context, Routes.subscriptionsHome);
+          await signInWithApple();
+          navigateToSubscriptionsHome();
         } on FirebaseAuthException catch (e) {
           print(e.code);
           print(e.message);
