@@ -1,6 +1,10 @@
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
+import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
+import 'package:deplan_subscriptions_client/constants/routes.dart';
+import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
+import 'package:deplan_subscriptions_client/utilities/datetime.dart';
 import 'package:flutter/material.dart';
 
 class SubsciptionsHome extends StatefulWidget {
@@ -11,6 +15,8 @@ class SubsciptionsHome extends StatefulWidget {
 }
 
 class _SubsciptionsHomeState extends State<SubsciptionsHome> {
+  DateTime selectedDate = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -30,9 +36,8 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
+    return ScreenWrapper(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,10 +72,11 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
               height: 40,
               width: double.infinity,
               child: MonthSelector(
-                  initialDate: DateTime.now(),
+                  initialDate: selectedDate,
                   onChange: (month, date) {
-                    print(month);
-                    print(date);
+                    setState(() {
+                      selectedDate = date!;
+                    });
                   }),
             ),
             const SizedBox(height: 24),
@@ -89,86 +95,25 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
             Expanded(
               child: ListView(
                 children: [
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
-                  SubscriptionCard(
-                    appName: 'App',
-                    planPrice: 0,
-                    userPays: 0,
-                    usagePercentage: 0,
-                    avatar: '',
-                    isEmpty: true,
-                  ),
+                  // generate a list of 10 SubscriptionCard elements empty for now
+                  for (int i = 0; i < 10; i++)
+                    SubscriptionCard(
+                      planPrice: 9.99,
+                      userPays: 5.09,
+                      usagePercentage: 0.45,
+                      backgroundColor: const Color(0xffffffff),
+                      avatar: 'https://robohash.org/robot-$i',
+                      title: 'Phorevr: Photo Storage $i',
+                      onTap: (card) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return SubscriptionDetails(
+                            subscriptionData: card,
+                            selectedDate: selectedDate,
+                          );
+                        }));
+                      },
+                    ),
                 ],
               ),
             ),

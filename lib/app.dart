@@ -1,4 +1,6 @@
+import 'package:deplan_subscriptions_client/models.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
+import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,11 @@ class App extends StatelessWidget {
         Routes.entryPoint: (context) => const AppEntryPoint(),
         Routes.subscriptionsHome: (context) => const SubsciptionsHome(),
         Routes.confirmSubscription: (context) => const ConfirmSubsciption(),
+        Routes.subscriptionDetails: (context) => SubscriptionDetails(
+              subscriptionData:
+                  ModalRoute.of(context)!.settings.arguments as Subscription,
+              selectedDate: DateTime.now(),
+            ),
       },
     );
   }

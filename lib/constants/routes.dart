@@ -4,4 +4,5 @@ class Routes {
   static const String entryPoint = '/entry-ppoint';
   static const String signin = '/signin';
   static const String confirmSubscription = '/confirm-subscription';
+  static const String subscriptionDetails = '/subscription-details';
 }
