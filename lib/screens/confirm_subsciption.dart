@@ -1,17 +1,45 @@
+import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/components/organization_item_vertical.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
+import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ConfirmSubsciption extends StatelessWidget {
+class ConfirmSubsciption extends StatefulWidget {
   final String orgId;
 
   const ConfirmSubsciption({super.key, required this.orgId});
 
   @override
+  State<ConfirmSubsciption> createState() => _ConfirmSubsciptionState();
+}
+
+class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
+  // if user is not authenticated, call Auth.signInWithApple method
+  @override
+  void initState() {
+    super.initState();
+
+    _loginIfNeeded();
+  }
+
+  _loginIfNeeded() async {
+    if (!Auth.isUserAuthenticated) {
+      try {
+        await Auth.signInWithApple();
+      } catch (e) {
+        _navigateToSignIn();
+      }
+    }
+  }
+
+  _navigateToSignIn() {
+    Navigator.pushNamedAndRemoveUntil(context, Routes.signin, (route) => false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print('OrgId: $orgId');
     final user = FirebaseAuth.instance.currentUser;
     return ScreenWrapper(
       child: Column(
