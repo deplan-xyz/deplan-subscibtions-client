@@ -1,6 +1,6 @@
+import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AppleSignInButton extends StatelessWidget {
@@ -12,27 +12,11 @@ class AppleSignInButton extends StatelessWidget {
       Navigator.pushNamed(context, Routes.subscriptionsHome);
     }
 
-    ;
-
-    Future<UserCredential> signInWithApple() async {
-      final appleProvider = OAuthProvider("apple.com")
-        ..addScope('email')
-        ..addScope('name');
-
-      if (kIsWeb) {
-        print('web');
-        return await FirebaseAuth.instance.signInWithPopup(appleProvider);
-      } else {
-        print('mobile');
-        return await FirebaseAuth.instance.signInWithProvider(appleProvider);
-      }
-    }
-
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
       onPressed: () async {
         try {
-          await signInWithApple();
+          await Auth.signInWithApple();
           navigateToSubscriptionsHome();
         } on FirebaseAuthException catch (e) {
           print(e.code);

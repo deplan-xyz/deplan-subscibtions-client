@@ -1,10 +1,8 @@
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
-import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
-import 'package:deplan_subscriptions_client/utilities/datetime.dart';
 import 'package:flutter/material.dart';
 
 class SubsciptionsHome extends StatefulWidget {
@@ -93,6 +91,7 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
             // scrolled list with SubscriptionCard elements
             const SizedBox(height: 16),
             Expanded(
+              flex: 1,
               child: ListView(
                 children: [
                   // generate a list of 10 SubscriptionCard elements empty for now
@@ -117,9 +116,9 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 45,
-            ),
+            // const SizedBox(
+            //   height: 45,
+            // ),
             // const Center(
             //   child: Text(
             //     "You don’t have any subscription yet",

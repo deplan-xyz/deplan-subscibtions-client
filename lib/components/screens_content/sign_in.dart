@@ -45,6 +45,9 @@ class SignInBody extends StatelessWidget {
                 height: 52,
                 child: const AppleSignInButton(),
               ),
+              const SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ),

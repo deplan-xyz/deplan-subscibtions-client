@@ -1,0 +1,44 @@
+// function that handles orgId parameter in web app
+import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
+import 'package:deplan_subscriptions_client/screens/signin.dart';
+import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+_checkAuthAndRedirect() {
+  final user = FirebaseAuth.instance.currentUser;
+  final bool isUserAuthenticated = user != null;
+
+  return MaterialPageRoute(
+    builder: (context) =>
+        isUserAuthenticated ? const SubsciptionsHome() : const Signin(),
+  );
+}
+
+_handleOrgIdQueryParam(RouteSettings settings) {
+  final Uri uri = Uri.parse(settings.name!);
+  String? orgId = uri.queryParameters['orgId'];
+  if (orgId != null) {
+    return MaterialPageRoute(
+      builder: (context) => ConfirmSubsciption(orgId: orgId),
+    );
+  }
+
+  return null;
+}
+
+handleQueryParamsParameter(RouteSettings settings) {
+  if (kIsWeb) {
+    // Handle web-based routing
+    final confirmSubscriptioRoute = _handleOrgIdQueryParam(settings);
+
+    if (confirmSubscriptioRoute != null) {
+      return confirmSubscriptioRoute;
+    }
+
+    return _checkAuthAndRedirect();
+  }
+  // If it's not web, fall back to default routing.
+  return _checkAuthAndRedirect();
+}

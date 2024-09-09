@@ -1,13 +1,18 @@
 import 'package:deplan_subscriptions_client/components/organization_item_vertical.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmSubsciption extends StatelessWidget {
-  const ConfirmSubsciption({super.key});
+  final String orgId;
+
+  const ConfirmSubsciption({super.key, required this.orgId});
 
   @override
   Widget build(BuildContext context) {
+    print('OrgId: $orgId');
+    final user = FirebaseAuth.instance.currentUser;
     return ScreenWrapper(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,10 +72,10 @@ class ConfirmSubsciption extends StatelessWidget {
                   color: TEXT_SECONDARY,
                 ),
               ),
-              const Text(
-                "deplanuser@icloud.com",
+              Text(
+                user?.email ?? '',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'SF Pro Display',
@@ -92,7 +97,8 @@ class ConfirmSubsciption extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
+          const SizedBox(height: 50),
         ],
       ),
     );

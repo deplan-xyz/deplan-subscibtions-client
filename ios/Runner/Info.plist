@@ -47,12 +47,19 @@
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
-	    <dict>
-	    <key>CFBundleURLSchemes</key>
-	        <array>
-	        	<string>com.relonch.deplan-subscriptions</string>
-	        </array>
-	    </dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.relonch.deplan-subscriptions-web</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>deplan</string>
+			</array>
+		</dict>
+	</array>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>deplan</string>
 	</array>
 </dict>
 </plist>
