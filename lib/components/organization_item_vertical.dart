@@ -1,5 +1,6 @@
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class OrganizationItemVertical extends StatelessWidget {
   // constructor should get an organization name, organization logo url, subscribtion price, organization name, organization website
@@ -25,7 +26,7 @@ class OrganizationItemVertical extends StatelessWidget {
           width: 85,
           height: 85,
         ),
-        const SizedBox(width: 15),
+        const SizedBox(height: 15),
         Text(
           organizationName,
           style: const TextStyle(
@@ -56,4 +57,64 @@ class OrganizationItemVertical extends StatelessWidget {
       ],
     );
   }
+}
+
+class OrganizationItemVerticalSkeleton extends StatelessWidget {
+  const OrganizationItemVerticalSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Skeletonizer(child: _buildSkeleton());
+  }
+}
+
+_buildSkeleton() {
+  return Column(
+    children: [
+      Skeletonizer(
+        child: Container(
+          width: 85,
+          height: 85,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+      const SizedBox(height: 15),
+      Skeletonizer(
+        enabled: true,
+        child: Container(
+          width: 200,
+          height: 30,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+      const SizedBox(height: 15),
+      Skeletonizer(
+        child: Container(
+          width: 200,
+          height: 20,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+      const SizedBox(height: 30),
+      Skeletonizer(
+        child: Container(
+          width: 100,
+          height: 20,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    ],
+  );
 }

@@ -34,6 +34,11 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
     }
   }
 
+  Future<void> getOrganizationById() async {
+    // call the api to get the organization by id
+    print('Getting organization by id: ${widget.orgId}');
+  }
+
   _navigateToSignIn() {
     Navigator.pushNamedAndRemoveUntil(context, Routes.signin, (route) => false);
   }
@@ -65,13 +70,14 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
                 )),
           ),
           const SizedBox(height: 50),
-          const OrganizationItemVertical(
-            organizationName: 'Justdoiter',
-            subscriptionPrice: '9.99\$/mo',
-            organizationWebsite: 'justdoiter.live',
-            organizationLogoUrl:
-                'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-          ),
+          // const OrganizationItemVertical(
+          //   organizationName: 'Justdoiter',
+          //   subscriptionPrice: '9.99\$/mo',
+          //   organizationWebsite: 'justdoiter.live',
+          //   organizationLogoUrl:
+          //       'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
+          // ),
+          const OrganizationItemVerticalSkeleton(),
           const SizedBox(height: 35),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 300),

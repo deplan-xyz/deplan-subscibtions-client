@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 class Auth {
   static Future<UserCredential> signInWithApple() async {
     final appleProvider = OAuthProvider("apple.com")
-      ..addScope('email')
-      ..addScope('name');
+      ..addScope('name')
+      ..addScope('email');
 
     if (kIsWeb) {
       return await FirebaseAuth.instance.signInWithPopup(appleProvider);
@@ -21,4 +21,20 @@ class Auth {
   static User? get currentUser => FirebaseAuth.instance.currentUser;
   static bool get isUserAuthenticated => currentUser != null;
   static Future<String?>? get authToken => currentUser?.getIdToken();
+
+  static onUserLoggedIn(Function(User) callback) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        callback(user);
+      }
+    });
+  }
+
+  static onUserLoggedOut(Function() callback) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        callback();
+      }
+    });
+  }
 }

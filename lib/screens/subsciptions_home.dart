@@ -1,3 +1,4 @@
+import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
@@ -53,7 +54,9 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Auth.signOut();
+                      },
                       icon: SizedBox(
                         width: 25,
                         height: 25,

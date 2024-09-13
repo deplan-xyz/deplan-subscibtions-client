@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:deplan_subscriptions_client/models.dart';
+import 'package:deplan_subscriptions_client/api/auth.dart';
+import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/utilities/route.dart';
+import 'package:deplan_subscriptions_client/utilities/uri.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -36,6 +38,20 @@ class _AppState extends State<App> {
       // Only handle deep links for iOS if the platform is iOS
       _handleIncomingLinks();
     }
+
+    Auth.onUserLoggedOut(() {
+      print('User is currently signed out!');
+      _navigatorKey.currentState!.pushNamedAndRemoveUntil(
+        Routes.signin,
+        (route) => false,
+      );
+    });
+
+    Auth.onUserLoggedIn((user) {
+      print('User is signed in!');
+      print('user uid: ${user.uid}');
+      print('user email: ${user.email}');
+    });
   }
 
   @override
@@ -54,10 +70,8 @@ class _AppState extends State<App> {
   void _handleIncomingLinks() async {
     // Handle deep link when the app is already running (iOS only)
     _sub = uriLinkStream.listen((Uri? uri) {
-      if (uri != null && uri.queryParameters.containsKey('orgId')) {
-        String orgId = uri.queryParameters['orgId'] ?? '';
-        print('OrgId found on iOS: $orgId');
-
+      final orgId = getOrgIdFromUri(uri);
+      if (orgId != null) {
         _navigateToConfirmSubscription(orgId);
       }
     }, onError: (err) {

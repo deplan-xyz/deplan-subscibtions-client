@@ -1,4 +1,4 @@
-import 'package:deplan_subscriptions_client/models.dart';
+import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
@@ -42,10 +42,12 @@ class SubscriptionCard extends StatelessWidget {
       onTap: () {
         if (onTap != null) {
           Subscription card = Subscription(
-              title: title,
-              discountPrice: userPays,
-              originalPrice: planPrice,
-              usagePercentage: usagePercentage);
+            name: title,
+            youPay: userPays,
+            planPrice: planPrice,
+            usage: usagePercentage,
+            logo: avatar,
+          );
           onTap!(card);
         }
       },

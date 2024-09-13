@@ -1,7 +1,7 @@
 import 'package:deplan_subscriptions_client/components/day_grid.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
-import 'package:deplan_subscriptions_client/models.dart';
+import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +33,7 @@ class SubscriptionDetails extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Text(
-              subscriptionData.title,
+              subscriptionData.name,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,
@@ -62,9 +62,9 @@ class SubscriptionDetails extends StatelessWidget {
               fontWeight: FontWeight.w700,
               color: TEXT_MAIN,
             ),
-            planPrice: subscriptionData.originalPrice,
-            userPays: subscriptionData.discountPrice,
-            usagePercentage: subscriptionData.usagePercentage,
+            planPrice: subscriptionData.planPrice,
+            userPays: subscriptionData.youPay,
+            usagePercentage: subscriptionData.usage,
           ),
           Flexible(
             child: DayGrid(
