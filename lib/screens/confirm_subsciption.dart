@@ -1,7 +1,9 @@
 import 'package:deplan_subscriptions_client/api/auth.dart';
+import 'package:deplan_subscriptions_client/api/common_api.dart';
 import 'package:deplan_subscriptions_client/components/organization_item_vertical.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
+import 'package:deplan_subscriptions_client/models/organization.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +36,11 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
     }
   }
 
-  Future<void> getOrganizationById() async {
-    // call the api to get the organization by id
-    print('Getting organization by id: ${widget.orgId}');
+  Future<Organization> getOrganizationById() async {
+    final organization = await api.getOrganizationById(widget.orgId);
+    print('Getting organization by id: ${organization.toString()}');
+
+    return organization;
   }
 
   _navigateToSignIn() {
@@ -70,14 +74,21 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
                 )),
           ),
           const SizedBox(height: 50),
-          // const OrganizationItemVertical(
-          //   organizationName: 'Justdoiter',
-          //   subscriptionPrice: '9.99\$/mo',
-          //   organizationWebsite: 'justdoiter.live',
-          //   organizationLogoUrl:
-          //       'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-          // ),
-          const OrganizationItemVerticalSkeleton(),
+          FutureBuilder(
+            future: getOrganizationById(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const OrganizationItemVerticalSkeleton();
+              }
+              return OrganizationItemVertical(
+                organizationName: snapshot.data!.name,
+                subscriptionPrice:
+                    snapshot.data!.settings.pricePerMonth.toString(),
+                organizationWebsite: '',
+                organizationLogoUrl: snapshot.data!.logo,
+              );
+            },
+          ),
           const SizedBox(height: 35),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 300),

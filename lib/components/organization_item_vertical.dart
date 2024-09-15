@@ -1,3 +1,4 @@
+import 'package:deplan_subscriptions_client/components/ipfs_image.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -21,10 +22,10 @@ class OrganizationItemVertical extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.network(
-          organizationLogoUrl,
+        SizedBox(
           width: 85,
           height: 85,
+          child: IpfsImage(path: organizationLogoUrl),
         ),
         const SizedBox(height: 15),
         Text(

@@ -16,7 +16,7 @@ class IpfsImage extends StatelessWidget {
     return FadeInImage(
       fadeInDuration: const Duration(milliseconds: 300),
       placeholder: placeholder as ImageProvider,
-      image: NetworkImage('$gatewayUrl/$path'),
+      image: NetworkImage('$gatewayUrl$path'),
     );
   }
 }

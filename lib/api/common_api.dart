@@ -8,7 +8,7 @@ class API extends BaseApi {
 
   Future<Organization> getOrganizationById(String id) async {
     final response = await getRequest('/org/$id');
-    return Organization.fromJson(response);
+    return Organization.fromJson(response.data);
   }
 
   Future<List<Subscription>> listSubscriptions(num date) async {
