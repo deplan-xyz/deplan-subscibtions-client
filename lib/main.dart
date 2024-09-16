@@ -18,13 +18,13 @@ void main() async {
 
   // run firebase emulators:start and then uncomment this code
   // DO NOT PUSH IT TO PROD UNCOMMENTED!!!!
-  if (kDebugMode && kIsWeb) {
-    try {
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // if (kDebugMode && kIsWeb) {
+  //   try {
+  //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Auth.onUserLoggedOut(() {
     Navigator.of(
