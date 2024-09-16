@@ -19,10 +19,13 @@ _checkAuthAndRedirect() {
 _handleOrgIdQueryParam(RouteSettings settings) {
   final Uri uri = Uri.parse(settings.name!);
   String? orgId = uri.queryParameters['orgId'];
-  if (orgId != null) {
-    return MaterialPageRoute(
-      builder: (context) => ConfirmSubsciption(orgId: orgId),
-    );
+  String? redirectUrl = uri.queryParameters['redirectUrl'];
+  String? data = uri.queryParameters['data'];
+
+  if (orgId != null && redirectUrl != null && data != null) {
+    // 1. check deplan token in flutter_secure_storage
+    // 2. if not found, redirect to signin
+    // 3. if found, continue to confirm subscription
   }
 
   return null;

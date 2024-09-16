@@ -6,12 +6,20 @@ import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/models/organization.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ConfirmSubsciption extends StatefulWidget {
   final String orgId;
+  final String redirectUrl;
+  final String data;
 
-  const ConfirmSubsciption({super.key, required this.orgId});
+  const ConfirmSubsciption(
+      {super.key,
+      required this.orgId,
+      required this.redirectUrl,
+      required this.data});
 
   @override
   State<ConfirmSubsciption> createState() => _ConfirmSubsciptionState();
@@ -22,12 +30,10 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
   @override
   void initState() {
     super.initState();
-
-    _loginIfNeeded();
   }
 
   _loginIfNeeded() async {
-    if (!Auth.isUserAuthenticated) {
+    if (FirebaseAuth.instance.currentUser == null) {
       try {
         await Auth.signInWithApple();
       } catch (e) {
@@ -45,6 +51,17 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
 
   _navigateToSignIn() {
     Navigator.pushNamedAndRemoveUntil(context, Routes.signin, (route) => false);
+  }
+
+  _launchCallbackUrl(String url) async {
+    if (kIsWeb) {
+      await launchUrl(Uri.parse(url));
+    }
+  }
+
+  _navigateToSubscriptionsHome() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, Routes.subscriptionsHome, (route) => false);
   }
 
   @override
@@ -132,7 +149,13 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _loginIfNeeded();
+                    var response = await api.confirmSubscription(
+                        widget.orgId, widget.data);
+                    _launchCallbackUrl(widget.redirectUrl);
+                    _navigateToSubscriptionsHome();
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),

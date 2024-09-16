@@ -101,6 +101,8 @@ class _AppState extends State<App> {
         Routes.subscriptionsHome: (context) => const SubsciptionsHome(),
         Routes.confirmSubscription: (context) => const ConfirmSubsciption(
               orgId: 'default',
+              redirectUrl: 'default',
+              data: 'default',
             ),
         Routes.subscriptionDetails: (context) => SubscriptionDetails(
               subscriptionData:

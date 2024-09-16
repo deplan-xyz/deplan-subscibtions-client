@@ -1,7 +1,7 @@
-import 'package:deplan_subscriptions_client/components/ipfs_image.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class OrganizationItemVertical extends StatelessWidget {
   // constructor should get an organization name, organization logo url, subscribtion price, organization name, organization website
@@ -25,7 +25,10 @@ class OrganizationItemVertical extends StatelessWidget {
         SizedBox(
           width: 85,
           height: 85,
-          child: IpfsImage(path: organizationLogoUrl),
+          child: FadeInImage(
+            placeholder: MemoryImage(kTransparentImage),
+            image: NetworkImage(organizationLogoUrl),
+          ),
         ),
         const SizedBox(height: 15),
         Text(
