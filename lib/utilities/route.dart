@@ -1,5 +1,3 @@
-// function that handles orgId parameter in web app
-import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
 import 'package:deplan_subscriptions_client/screens/signin.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';

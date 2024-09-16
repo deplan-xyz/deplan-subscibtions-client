@@ -51,7 +51,6 @@ class BaseApi {
   Map<String, String> _getHeaders() {
     final token = Auth.deplanAuthToken;
     return {
-      'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
   }

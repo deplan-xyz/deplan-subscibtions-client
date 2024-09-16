@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
+import 'package:deplan_subscriptions_client/screens/app_init_controller.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
-import 'package:deplan_subscriptions_client/utilities/route.dart';
 import 'package:deplan_subscriptions_client/utilities/uri.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
 import 'package:deplan_subscriptions_client/screens/signin.dart';
@@ -33,25 +31,6 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-
-    if (!kIsWeb && Platform.isIOS) {
-      // Only handle deep links for iOS if the platform is iOS
-      _handleIncomingLinks();
-    }
-
-    Auth.onUserLoggedOut(() {
-      print('User is currently signed out!');
-      _navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        Routes.signin,
-        (route) => false,
-      );
-    });
-
-    Auth.onUserLoggedIn((user) {
-      print('User is signed in!');
-      print('user uid: ${user.uid}');
-      print('user email: ${user.email}');
-    });
   }
 
   @override
@@ -87,16 +66,14 @@ class _AppState extends State<App> {
       title: 'DePlan Subscriptions',
       debugShowCheckedModeBanner: false,
       theme: getAppTheme(),
-      onGenerateRoute: (settings) {
-        return handleQueryParamsParameter(settings);
-      },
       localizationsDelegates: const [
         DefaultMaterialLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
       ],
-      initialRoute: '/',
+      initialRoute: Routes.appInitController,
       routes: {
+        Routes.appInitController: (context) => const AppInitController(),
         Routes.signin: (context) => const Signin(),
         Routes.subscriptionsHome: (context) => const SubsciptionsHome(),
         Routes.confirmSubscription: (context) => const ConfirmSubsciption(

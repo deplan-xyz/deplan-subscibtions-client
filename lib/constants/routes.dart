@@ -1,5 +1,6 @@
 // create a record with a router names
 class Routes {
+  static const String appInitController = '/';
   static const String subscriptionsHome = '/subscriptions';
   static const String entryPoint = '/entry-ppoint';
   static const String signin = '/signin';

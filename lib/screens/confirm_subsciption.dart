@@ -151,8 +151,7 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
                 child: ElevatedButton(
                   onPressed: () async {
                     await _loginIfNeeded();
-                    var response = await api.confirmSubscription(
-                        widget.orgId, widget.data);
+                    await api.confirmSubscription(widget.orgId, widget.data);
                     _launchCallbackUrl(widget.redirectUrl);
                     _navigateToSubscriptionsHome();
                   },
