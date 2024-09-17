@@ -17,15 +17,21 @@ class _AppInitControllerState extends State<AppInitController> {
   String? _redirectUrl;
   String? _data;
 
-  Future<void> _initAuth(BuildContext ctx) async {
-    await Auth.signInWithApple();
-    _navigateToConfirmSubscription(ctx);
-  }
-
   @override
   void initState() {
     super.initState();
     _handleQueryParameters();
+  }
+
+  Future<void> _initAuth(BuildContext ctx) async {
+    await _signInWithAppleIfNeeded(ctx);
+    _navigateToConfirmSubscription(ctx);
+  }
+
+  _signInWithAppleIfNeeded(BuildContext ctx) async {
+    if (!Auth.isUserAuthenticated) {
+      await Auth.signInWithApple();
+    }
   }
 
   void _handleQueryParameters() {
@@ -70,12 +76,11 @@ class _AppInitControllerState extends State<AppInitController> {
   _navigateToConfirmSubscription(BuildContext ctx) {
     final shouldNavigateToConfirm =
         _orgId != null && _redirectUrl != null && _data != null;
-    Navigator.push(
-      ctx,
-      shouldNavigateToConfirm
-          ? _navigateToConfirmSubscriptionPage(ctx)
-          : _navigateToSubscriptionsHome(ctx),
-    );
+    if (shouldNavigateToConfirm) {
+      _navigateToConfirmSubscriptionPage(ctx);
+    } else {
+      _navigateToSubscriptionsHome(ctx);
+    }
   }
 
   @override
