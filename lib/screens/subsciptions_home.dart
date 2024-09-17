@@ -1,7 +1,7 @@
-import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
+import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,9 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        Auth.signOut();
+                        if (mounted) {
+                          Navigator.pushNamed(context, Routes.settings);
+                        }
                       },
                       icon: SizedBox(
                         width: 25,

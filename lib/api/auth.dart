@@ -50,6 +50,11 @@ class Auth {
 
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+    try {
+      await appStorage.deleteValue(deplanAuthTokenKey);
+    } catch (e) {
+      print('Error deleting deplan auth token: $e');
+    }
     Auth.deplanAuthToken = '';
   }
 

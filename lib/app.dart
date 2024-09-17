@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/screens/app_init_controller.dart';
+import 'package:deplan_subscriptions_client/screens/settings_screen.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/utilities/uri.dart';
@@ -76,6 +77,7 @@ class _AppState extends State<App> {
         Routes.appInitController: (context) => const AppInitController(),
         Routes.signin: (context) => const Signin(),
         Routes.subscriptionsHome: (context) => const SubsciptionsHome(),
+        Routes.settings: (context) => const SettingsScreen(),
         Routes.confirmSubscription: (context) => const ConfirmSubsciption(
               orgId: 'default',
               redirectUrl: 'default',
