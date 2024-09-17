@@ -50,7 +50,7 @@ class OrganizationItemVertical extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         Text(
-          subscriptionPrice,
+          '\$${double.parse(subscriptionPrice).toStringAsFixed(2)} /mo',
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w500,
