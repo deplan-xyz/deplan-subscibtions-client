@@ -109,14 +109,27 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "You don't have any subscription yet",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
+                    return Column(
+                      children: [
+                        SubscriptionCard(
+                          isEmpty: true,
+                          title: 'No subscriptions',
+                          planPrice: 0,
+                          userPays: 0,
+                          usagePercentage: 0,
+                          avatar: 'assets/icons/no_subscriptions.png',
+                          orgId: 'no_org_id',
+                          onTap: (subscription) {},
                         ),
-                      ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          "You don't have any subscription yet",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     );
                   }
 

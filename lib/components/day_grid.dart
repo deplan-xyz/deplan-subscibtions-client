@@ -26,11 +26,11 @@ class DayGrid extends StatelessWidget {
             SubscriptionDetailsModel? currentMonthSubscriptions = snapshot.data!
                 .where((element) => element.month == date.month)
                 .toList()
-                .first;
+                ?.first;
             return gridBuilder(
                 daysInMonth,
                 (BuildContext context, int index) => daysGrid(context, index,
-                    usage: currentMonthSubscriptions.eventsByDay,
+                    usage: currentMonthSubscriptions?.eventsByDay ?? [],
                     currentMonthName: DateFormat('MMMM dd').format(date)));
           }
 
@@ -104,10 +104,43 @@ daysGrid(BuildContext context, int index,
     String? currentMonthName}) {
   int dayNumber = index + 1;
   Map<String, num> usageData = usage?[index] ?? {};
+  final usageColors = [
+    const Color(0xffE8EAEE),
+    const Color(0xff93E7A2),
+    const Color(0xff3EBE5E),
+    const Color(0xff2F984A),
+    const Color(0xff216435),
+  ];
+  num summaryEventUsage =
+      usageData.entries.map((entry) => entry.value).reduce((a, b) => a + b);
+
+  getUsageColor(num usage) {
+    if (usage == 0) {
+      return usageColors[0];
+    }
+
+    if (usage <= 1) {
+      return usageColors[1];
+    }
+
+    if (usage <= 3) {
+      return usageColors[2];
+    }
+
+    if (usage <= 5) {
+      return usageColors[3];
+    }
+
+    if (usage <= 8) {
+      return usageColors[4];
+    }
+
+    return usageColors[0];
+  }
 
   return Container(
     decoration: BoxDecoration(
-      color: const Color(0xffE8EAEE), // Gray background color
+      color: getUsageColor(summaryEventUsage),
       borderRadius: BorderRadius.circular(8),
     ),
     child: Tooltip(
@@ -141,7 +174,9 @@ daysGrid(BuildContext context, int index,
           color: Colors.black,
         ),
       ),
-      child: Text(dayNumber.toString()),
+      child: Center(
+        child: Text(dayNumber.toString()),
+      ),
     ),
   );
 }
