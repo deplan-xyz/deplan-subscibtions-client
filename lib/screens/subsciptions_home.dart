@@ -25,9 +25,9 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   void initState() {
     super.initState();
 
-    api.getPaymentLink().then((_paymentlink) {
+    api.getPaymentLink().then((paymentlinkResponse) {
       setState(() {
-        paymentLink = _paymentlink;
+        paymentLink = paymentlinkResponse;
       });
     });
   }
