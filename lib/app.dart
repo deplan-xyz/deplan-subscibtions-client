@@ -64,7 +64,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: _navigatorKey,
-      title: 'DePlan Subscriptions',
+      title: 'DePlan',
       debugShowCheckedModeBanner: false,
       theme: getAppTheme(),
       localizationsDelegates: const [
