@@ -5,6 +5,7 @@ import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 
 class SubscriptionCard extends StatelessWidget {
   final String title;
+  final String orgId;
   final TextStyle titleStyle;
   final double planPrice;
   final double userPays;
@@ -17,6 +18,7 @@ class SubscriptionCard extends StatelessWidget {
   SubscriptionCard({
     super.key,
     required this.title,
+    required this.orgId,
     required this.planPrice,
     required this.userPays,
     required this.usagePercentage,
@@ -44,6 +46,7 @@ class SubscriptionCard extends StatelessWidget {
           Subscription card = Subscription(
             name: title,
             youPay: userPays,
+            orgId: orgId,
             planPrice: planPrice,
             usage: usagePercentage,
             logo: avatar,

@@ -27,7 +27,7 @@ class SubscriptionDetails extends StatelessWidget {
               width: 28,
               height: 28,
               child: Image.network(
-                'https://robohash.org/wdawddawd',
+                subscriptionData.logo!,
                 width: 100,
               ),
             ),
@@ -64,13 +64,15 @@ class SubscriptionDetails extends StatelessWidget {
             ),
             planPrice: subscriptionData.planPrice,
             userPays: subscriptionData.youPay,
+            orgId: subscriptionData.orgId,
             usagePercentage: subscriptionData.usage,
           ),
           Flexible(
             child: DayGrid(
               date: selectedDate,
+              subscriptionData: subscriptionData,
             ),
-          )
+          ),
         ],
       ),
     );

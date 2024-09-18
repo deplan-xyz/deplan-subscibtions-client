@@ -4,6 +4,7 @@ import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
+import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -99,15 +100,9 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
             Expanded(
               flex: 1,
               child: FutureBuilder<List<Subscription>>(
-                future: api
-                    .listSubscriptions(DateTime(selectedDate.year,
-                            selectedDate.month, selectedDate.day + 1)
-                        .millisecondsSinceEpoch)
-                    .then((response) {
-                  return (response.data as List<dynamic>)
-                      .map((item) => Subscription.fromJson(item))
-                      .toList();
-                }),
+                future: api.listSubscriptions(DateTime(selectedDate.year,
+                        selectedDate.month, selectedDate.day + 1)
+                    .millisecondsSinceEpoch),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -136,6 +131,18 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                         userPays: subscription.youPay,
                         usagePercentage: subscription.usage,
                         avatar: subscription.logo,
+                        orgId: subscription.orgId,
+                        onTap: (subscription) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SubscriptionDetails(
+                                subscriptionData: subscription,
+                                selectedDate: selectedDate,
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   );

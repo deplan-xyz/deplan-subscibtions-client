@@ -1,9 +1,7 @@
-import 'dart:js_interop';
-
-import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/api/base_api.dart';
 import 'package:deplan_subscriptions_client/models/organization.dart';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
+import 'package:deplan_subscriptions_client/models/subscription_details.dart';
 import 'package:dio/dio.dart';
 
 class API extends BaseApi {
@@ -21,14 +19,20 @@ class API extends BaseApi {
     return Organization.fromJson(response.data);
   }
 
-  Future<Response> listSubscriptions(num date) async {
-    return getRequest('/events?date=$date');
+  Future<List<Subscription>> listSubscriptions(num date) async {
+    final response = await getRequest('/events?date=$date');
+    return (response.data as List<dynamic>)
+        .map((item) => Subscription.fromJson(item))
+        .toList();
   }
 
-  Future<Subscription> subsciptionDetails(String orgId) async {
-    final userId = Auth.currentUser?.uid;
-    return await postRequest('/events/subscription/$userId',
-        body: {'orgId': orgId});
+  Future<List<SubscriptionDetailsModel>> subsciptionDetails(
+      String orgId, num date) async {
+    final response = await getRequest('/events/orgs/$orgId?date=$date');
+    final fromJsonData = (response.data as List<dynamic>)
+        .map((item) => SubscriptionDetailsModel.fromJson(item))
+        .toList();
+    return fromJsonData;
   }
 }
 

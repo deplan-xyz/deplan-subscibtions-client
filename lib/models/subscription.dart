@@ -3,7 +3,7 @@ class Subscription {
   final double planPrice;
   final double youPay;
   final double usage;
-  final String? orgId;
+  final String orgId;
   final String? username;
   final String? description;
   final String? logo;
@@ -14,7 +14,7 @@ class Subscription {
     required this.planPrice,
     required this.youPay,
     required this.usage,
-    this.orgId,
+    required this.orgId,
     this.username,
     this.description,
     this.usageCount,
