@@ -131,7 +131,7 @@ daysGrid(BuildContext context, int index,
       return usageColors[3];
     }
 
-    if (usage <= 8) {
+    if (usage > 5) {
       return usageColors[4];
     }
 
