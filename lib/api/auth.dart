@@ -84,4 +84,12 @@ class Auth {
       }
     });
   }
+
+  static initDeplanAuthToken() async {
+    final deplantokenfromStorage =
+        await appStorage.getValue(deplanAuthTokenKey);
+    if (deplantokenfromStorage != null) {
+      Auth.deplanAuthToken = deplantokenfromStorage;
+    }
+  }
 }
