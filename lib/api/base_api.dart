@@ -22,15 +22,11 @@ class BaseApi {
   }
 
   @protected
-  getRequest(String path,
+  Future<Response<T>> getRequest<T>(String path,
       {Map<String, dynamic> queryParameters = const {}}) async {
     final headers = this.headers;
-    try {
-      return await client.get(path,
-          queryParameters: queryParameters, options: Options(headers: headers));
-    } on DioException catch (e) {
-      return e.response;
-    }
+    return client.get(path,
+        queryParameters: queryParameters, options: Options(headers: headers));
   }
 
   @protected

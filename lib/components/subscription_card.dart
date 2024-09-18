@@ -52,6 +52,7 @@ class SubscriptionCard extends StatelessWidget {
         }
       },
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         margin: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xffE9E9EE).withOpacity(0.5),
@@ -160,7 +161,7 @@ class SubscriptionCard extends StatelessWidget {
               child: DashedCircularProgressBar.aspectRatio(
                 aspectRatio: 1, // width ÷ height
                 valueNotifier: _valueNotifier,
-                progress: usagePercentage * 100,
+                progress: usagePercentage,
                 startAngle: 240,
                 sweepAngle: 240,
                 foregroundColor: const Color(0xff00ADED),

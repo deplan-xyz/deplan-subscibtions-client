@@ -60,8 +60,8 @@ class Auth {
 
   static Future<String> getDeplanAuthToken() async {
     final firebaseUserId = FirebaseAuth.instance.currentUser?.uid;
-    final response =
-        await client.post('/auth/signin/firebase', data: {firebaseUserId});
+    final response = await client.post('/auth/signin/firebase',
+        data: {'firebaseUserId': firebaseUserId});
     return response.data['token'];
   }
 

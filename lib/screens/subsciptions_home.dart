@@ -1,8 +1,9 @@
+import 'package:deplan_subscriptions_client/api/common_api.dart';
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
-import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
+import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -97,42 +98,50 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
             const SizedBox(height: 16),
             Expanded(
               flex: 1,
-              child: ListView(
-                children: [
-                  // generate a list of 10 SubscriptionCard elements empty for now
-                  for (int i = 0; i < 10; i++)
-                    SubscriptionCard(
-                      planPrice: 9.99,
-                      userPays: 5.09,
-                      usagePercentage: 0.45,
-                      backgroundColor: const Color(0xffffffff),
-                      avatar: 'https://robohash.org/robot-$i',
-                      title: 'Phorevr: Photo Storage $i',
-                      onTap: (card) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return SubscriptionDetails(
-                            subscriptionData: card,
-                            selectedDate: selectedDate,
-                          );
-                        }));
-                      },
-                    ),
-                ],
+              child: FutureBuilder<List<Subscription>>(
+                future: api
+                    .listSubscriptions(DateTime(selectedDate.year,
+                            selectedDate.month, selectedDate.day + 1)
+                        .millisecondsSinceEpoch)
+                    .then((response) {
+                  return (response.data as List<dynamic>)
+                      .map((item) => Subscription.fromJson(item))
+                      .toList();
+                }),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "You don't have any subscription yet",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  }
+
+                  final subscriptions = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: subscriptions.length,
+                    itemBuilder: (context, index) {
+                      final subscription = subscriptions[index];
+                      return SubscriptionCard(
+                        title: subscription.name,
+                        planPrice: subscription.planPrice,
+                        userPays: subscription.youPay,
+                        usagePercentage: subscription.usage,
+                        avatar: subscription.logo,
+                      );
+                    },
+                  );
+                },
               ),
             ),
-            // const SizedBox(
-            //   height: 45,
-            // ),
-            // const Center(
-            //   child: Text(
-            //     "You don’t have any subscription yet",
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       color: Colors.grey,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

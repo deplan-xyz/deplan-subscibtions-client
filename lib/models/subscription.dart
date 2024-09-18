@@ -4,7 +4,6 @@ class Subscription {
   final double youPay;
   final double usage;
   final String? orgId;
-  final String? typeEvent;
   final String? username;
   final String? description;
   final String? logo;
@@ -16,7 +15,6 @@ class Subscription {
     required this.youPay,
     required this.usage,
     this.orgId,
-    this.typeEvent,
     this.username,
     this.description,
     this.usageCount,
@@ -26,14 +24,13 @@ class Subscription {
   factory Subscription.fromJson(Map<String, dynamic> json) {
     return Subscription(
       orgId: json['orgId'],
-      typeEvent: json['typeEvent'],
       username: json['username'],
       name: json['name'],
       description: json['description'],
       logo: json['logo'],
-      planPrice: json['planPrice'].toDouble(),
-      youPay: json['youPay'].toDouble(),
-      usage: json['usage'].toDouble(),
+      planPrice: json['planPrice'],
+      youPay: json['youPay'],
+      usage: json['usage'],
       usageCount: json['usageCount'],
     );
   }

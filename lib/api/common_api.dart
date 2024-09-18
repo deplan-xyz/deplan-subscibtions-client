@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/api/base_api.dart';
 import 'package:deplan_subscriptions_client/models/organization.dart';
@@ -19,10 +21,8 @@ class API extends BaseApi {
     return Organization.fromJson(response.data);
   }
 
-  Future<List<Subscription>> listSubscriptions(num date) async {
-    final userId = Auth.currentUser?.uid;
-    return await postRequest('/events/subscription/$userId',
-        body: {'date': date});
+  Future<Response> listSubscriptions(num date) async {
+    return getRequest('/events?date=$date');
   }
 
   Future<Subscription> subsciptionDetails(String orgId) async {
