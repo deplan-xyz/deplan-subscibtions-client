@@ -19,10 +19,17 @@ class SubsciptionsHome extends StatefulWidget {
 
 class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   DateTime selectedDate = DateTime.now();
+  late String paymentLink;
 
   @override
   void initState() {
     super.initState();
+
+    api.getPaymentLink().then((_paymentlink) {
+      setState(() {
+        paymentLink = _paymentlink;
+      });
+    });
   }
 
   @override
@@ -172,8 +179,8 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                         }
 
                         return snapshot.data!.paymentInfo.youPay > 0.5
-                            ? buildBottomSheet(
-                                context, snapshot.data!.paymentInfo)
+                            ? buildBottomSheet(context,
+                                snapshot.data!.paymentInfo, paymentLink)
                             : Container();
                       })
                 ],
@@ -186,7 +193,8 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   }
 }
 
-Widget buildBottomSheet(BuildContext context, PaymentInfo paymentInfo) {
+Widget buildBottomSheet(
+    BuildContext context, PaymentInfo paymentInfo, String? paymentLink) {
   return Container(
     decoration: const BoxDecoration(
       color: Color(0xffffffff),
@@ -217,8 +225,11 @@ Widget buildBottomSheet(BuildContext context, PaymentInfo paymentInfo) {
             ),
             onPressed: () async {
               try {
-                final paymentLink = await api.getPaymentLink();
-                await launchUrl(Uri.parse(paymentLink));
+                if (paymentLink != null) {
+                  await launchUrl(Uri.parse(paymentLink));
+                } else {
+                  print('Paymment link is not defined');
+                }
               } catch (e) {
                 print('Error when requesting payment link: $e');
               }
