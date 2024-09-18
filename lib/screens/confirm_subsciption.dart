@@ -26,10 +26,14 @@ class ConfirmSubsciption extends StatefulWidget {
 }
 
 class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
+  late Future<Organization> futureOrganization;
+
   // if user is not authenticated, call Auth.signInWithApple method
   @override
   void initState() {
     super.initState();
+
+    futureOrganization = getOrganizationById();
   }
 
   _loginIfNeeded() async {
@@ -92,7 +96,7 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
             ),
             const SizedBox(height: 50),
             FutureBuilder(
-              future: getOrganizationById(),
+              future: futureOrganization,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const OrganizationItemVerticalSkeleton();
