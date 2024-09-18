@@ -3,10 +3,12 @@ import 'package:deplan_subscriptions_client/components/months_selector.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/components/subscription_card.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
+import 'package:deplan_subscriptions_client/models/payment_info.dart';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SubsciptionsHome extends StatefulWidget {
   const SubsciptionsHome({super.key});
@@ -21,25 +23,13 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   @override
   void initState() {
     super.initState();
-
-    // Simulate a condition: Show the bottom sheet after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      // make an api call to get the data
-      _showPaymentBottomSheet(false);
-    });
-  }
-
-  _showPaymentBottomSheet(bool showPaymentBottomSheet) {
-    if (showPaymentBottomSheet) {
-      _showBottomSheet(context);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return ScreenWrapper(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -98,68 +88,95 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
             // scrolled list with SubscriptionCard elements
             const SizedBox(height: 16),
             Expanded(
-              flex: 1,
-              child: FutureBuilder<List<Subscription>>(
-                future: api.listSubscriptions(DateTime(selectedDate.year,
-                        selectedDate.month, selectedDate.day + 1)
-                    .millisecondsSinceEpoch),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Column(
-                      children: [
-                        SubscriptionCard(
-                          isEmpty: true,
-                          title: 'No subscriptions',
-                          planPrice: 0,
-                          userPays: 0,
-                          usagePercentage: 0,
-                          avatar: 'assets/icons/no_subscriptions.png',
-                          orgId: 'no_org_id',
-                          onTap: (subscription) {},
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          "You don't have any subscription yet",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-
-                  final subscriptions = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: subscriptions.length,
-                    itemBuilder: (context, index) {
-                      final subscription = subscriptions[index];
-                      return SubscriptionCard(
-                        title: subscription.name,
-                        planPrice: subscription.planPrice,
-                        userPays: subscription.youPay,
-                        usagePercentage: subscription.usage,
-                        avatar: subscription.logo,
-                        orgId: subscription.orgId,
-                        onTap: (subscription) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SubscriptionDetails(
-                                subscriptionData: subscription,
-                                selectedDate: selectedDate,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: FutureBuilder<List<Subscription>>(
+                      future: api.listSubscriptions(DateTime(selectedDate.year,
+                              selectedDate.month, selectedDate.day + 1)
+                          .millisecondsSinceEpoch),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return Column(
+                            children: [
+                              SubscriptionCard(
+                                isEmpty: true,
+                                title: 'No subscriptions',
+                                planPrice: 0,
+                                userPays: 0,
+                                usagePercentage: 0,
+                                avatar: 'assets/icons/no_subscriptions.png',
+                                orgId: 'no_org_id',
+                                onTap: (subscription) {},
                               ),
-                            ),
+                              const SizedBox(height: 16),
+                              const Text(
+                                "You don't have any subscription yet",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
                           );
-                        },
-                      );
-                    },
-                  );
-                },
+                        }
+
+                        final subscriptions = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: subscriptions.length,
+                          itemBuilder: (context, index) {
+                            final subscription = subscriptions[index];
+                            return SubscriptionCard(
+                              title: subscription.name,
+                              planPrice: subscription.planPrice,
+                              userPays: subscription.youPay,
+                              usagePercentage: subscription.usage,
+                              avatar: subscription.logo,
+                              orgId: subscription.orgId,
+                              onTap: (subscription) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SubscriptionDetails(
+                                      subscriptionData: subscription,
+                                      selectedDate: selectedDate,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  FutureBuilder(
+                      future: api.getPaymentInfo(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text('');
+                        }
+
+                        if (snapshot.hasError) {
+                          return const Text('');
+                        }
+
+                        return snapshot.data!.paymentInfo.youPay > 0.5
+                            ? buildBottomSheet(
+                                context, snapshot.data!.paymentInfo)
+                            : Container();
+                      })
+                ],
               ),
             ),
           ],
@@ -169,28 +186,11 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   }
 }
 
-_showBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true, // Allow the bottom sheet to take full width
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
+Widget buildBottomSheet(BuildContext context, PaymentInfo paymentInfo) {
+  return Container(
+    decoration: const BoxDecoration(
+      color: Color(0xffffffff),
     ),
-    isDismissible: false,
-    sheetAnimationStyle: AnimationStyle(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-      reverseCurve: Curves.easeInOut,
-    ),
-    builder: (BuildContext context) {
-      return buildBottomSheet(context);
-    },
-  );
-}
-
-Widget buildBottomSheet(BuildContext context) {
-  return Padding(
-    padding: MediaQuery.of(context).viewInsets,
     child: Container(
       padding: const EdgeInsets.all(16.0),
       width: MediaQuery.of(context).size.width,
@@ -198,9 +198,9 @@ Widget buildBottomSheet(BuildContext context) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
-            "You save \$42.22 this month",
-            style: TextStyle(
+          Text(
+            "You save \$${paymentInfo.fullPrice - paymentInfo.youPay} this month",
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.purple,
@@ -215,12 +215,19 @@ Widget buildBottomSheet(BuildContext context) {
                 borderRadius: BorderRadius.circular(25.0),
               ),
             ),
-            onPressed: () {},
-            child: const Row(
+            onPressed: () async {
+              try {
+                final paymentLink = await api.getPaymentLink();
+                await launchUrl(Uri.parse(paymentLink));
+              } catch (e) {
+                print('Error when requesting payment link: $e');
+              }
+            },
+            child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Pay ",
                   style: TextStyle(
                     fontSize: 18,
@@ -229,17 +236,17 @@ Widget buildBottomSheet(BuildContext context) {
                   ),
                 ),
                 Text(
-                  "\$55.94",
-                  style: TextStyle(
+                  "\$${paymentInfo.fullPrice.toStringAsFixed(2)}",
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.grey,
                     decoration: TextDecoration.lineThrough,
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
-                  "\$13.72",
-                  style: TextStyle(
+                  "\$${paymentInfo.youPay.toStringAsFixed(2)}",
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -248,7 +255,6 @@ Widget buildBottomSheet(BuildContext context) {
               ],
             ),
           ),
-          const SizedBox(height: 50),
         ],
       ),
     ),

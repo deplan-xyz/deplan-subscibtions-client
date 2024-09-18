@@ -1,5 +1,6 @@
 import 'package:deplan_subscriptions_client/api/base_api.dart';
 import 'package:deplan_subscriptions_client/models/organization.dart';
+import 'package:deplan_subscriptions_client/models/payment_info.dart';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/models/subscription_details.dart';
 import 'package:dio/dio.dart';
@@ -33,6 +34,16 @@ class API extends BaseApi {
         .map((item) => SubscriptionDetailsModel.fromJson(item))
         .toList();
     return fromJsonData;
+  }
+
+  Future<PaymentInfoResponse> getPaymentInfo() async {
+    final response = await getRequest('/events/payment/info');
+    return PaymentInfoResponse.fromJson(response.data);
+  }
+
+  Future<String> getPaymentLink() async {
+    final response = await getRequest('/events/payment');
+    return response.data["paymentUrl"];
   }
 }
 
