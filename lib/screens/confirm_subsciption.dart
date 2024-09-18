@@ -68,8 +68,7 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return ScreenWrapper(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: ListView(
         children: [
           const SizedBox(height: 20),
           Center(
