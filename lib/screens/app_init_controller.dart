@@ -2,6 +2,8 @@ import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
+import 'package:deplan_subscriptions_client/utilities/error_handlers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,13 +26,19 @@ class _AppInitControllerState extends State<AppInitController> {
   }
 
   Future<void> _initAuth(BuildContext ctx) async {
-    await _signInWithAppleIfNeeded(ctx);
-    _navigateToConfirmSubscription(ctx);
+    await _signInWithAppleIfNeeded(ctx).then((_) => {
+          if (context.mounted) {_navigateToConfirmSubscription(ctx)}
+        });
   }
 
-  _signInWithAppleIfNeeded(BuildContext ctx) async {
+  Future<void> _signInWithAppleIfNeeded(BuildContext ctx) async {
     if (!Auth.isUserAuthenticated) {
-      await Auth.signInWithApple();
+      try {
+        await Auth.signInWithApple();
+      } on FirebaseAuthException catch (e) {
+        print('AppInitController: Error signing in with apple: $e');
+        rethrow;
+      }
     }
   }
 
@@ -73,13 +81,13 @@ class _AppInitControllerState extends State<AppInitController> {
     );
   }
 
-  _navigateToConfirmSubscription(BuildContext ctx) {
+  Future<void> _navigateToConfirmSubscription(BuildContext ctx) async {
     final shouldNavigateToConfirm =
         _orgId != null && _redirectUrl != null && _data != null;
     if (shouldNavigateToConfirm) {
-      _navigateToConfirmSubscriptionPage(ctx);
+      await _navigateToConfirmSubscriptionPage(ctx);
     } else {
-      _navigateToSubscriptionsHome(ctx);
+      await _navigateToSubscriptionsHome(ctx);
     }
   }
 
@@ -93,7 +101,35 @@ class _AppInitControllerState extends State<AppInitController> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CupertinoActivityIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              final error = snapshot.error;
+              if (error is FirebaseAuthException) {
+                if (error.code == 'popup-blocked') {
+                  return Column(
+                    children: [
+                      const Text(
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          'Please allow popups in your browser settings to continue.'),
+                      const SizedBox(height: 20),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.9,
+                          maxHeight: MediaQuery.of(context).size.height * 0.7,
+                        ),
+                        child: Image.asset(
+                          'assets/images/safari-pop-up-blocker-ios.jpg',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                return Text(getFirebaseErrorPrettifiedText(error));
+              }
+              return const SizedBox.shrink();
             } else {
               return const SizedBox.shrink();
             }

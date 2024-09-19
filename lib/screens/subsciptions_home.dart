@@ -1,3 +1,4 @@
+import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/api/common_api.dart';
 import 'package:deplan_subscriptions_client/components/months_selector.dart';
 import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
@@ -7,6 +8,8 @@ import 'package:deplan_subscriptions_client/models/payment_info.dart';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/screens/subscription_details.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
+import 'package:deplan_subscriptions_client/utilities/error_handlers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -109,6 +112,26 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                           return const Center(
                               child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
+                          if (snapshot.error is DioException) {
+                            final dioError = snapshot.error as DioException;
+                            if (dioError.type == DioExceptionType.unknown) {
+                              return const Center(
+                                  child: Text(
+                                      'Error: Please check your internet connection'));
+                            }
+
+                            // handle 401 unauthorized
+                            if (dioError.response?.statusCode == 401) {
+                              Auth.signInWithApple().catchError((error) {
+                                if (context.mounted) {
+                                  shouwAuthErrorDialog(
+                                      context: context, error: error);
+                                }
+                              });
+                              return const Center(
+                                  child: Text('Authenticating...'));
+                            }
+                          }
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData ||

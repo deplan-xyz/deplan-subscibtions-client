@@ -5,6 +5,7 @@ import 'package:deplan_subscriptions_client/components/screen_wrapper.dart';
 import 'package:deplan_subscriptions_client/constants/routes.dart';
 import 'package:deplan_subscriptions_client/models/organization.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
+import 'package:deplan_subscriptions_client/utilities/error_handlers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +41,11 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
     if (FirebaseAuth.instance.currentUser == null) {
       try {
         await Auth.signInWithApple();
-      } catch (e) {
-        _navigateToSignIn();
+      } on FirebaseAuthException catch (e) {
+        print('Confirm Subscription: Error signing in with apple: $e');
+        if (mounted) {
+          shouwAuthErrorDialog(context: context, error: e);
+        }
       }
     }
   }

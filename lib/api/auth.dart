@@ -30,21 +30,23 @@ class Auth {
     }
   }
 
-  static Future<UserCredential> signInWithApple() async {
+  static Future<void> signInWithApple() async {
     final appleProvider = OAuthProvider("apple.com")
       ..addScope('name')
       ..addScope('email');
 
     if (kIsWeb) {
-      final authResponse =
-          await FirebaseAuth.instance.signInWithPopup(appleProvider);
+      try {
+        await FirebaseAuth.instance.signInWithPopup(appleProvider);
+      } on FirebaseAuthException catch (err) {
+        print("Auth error: ${err.code}");
+        rethrow;
+      }
+
       await _getAndSetDeplanAuthToken();
-      return authResponse;
     } else {
-      final authResponse =
-          await FirebaseAuth.instance.signInWithProvider(appleProvider);
+      await FirebaseAuth.instance.signInWithProvider(appleProvider);
       await _getAndSetDeplanAuthToken();
-      return authResponse;
     }
   }
 

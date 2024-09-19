@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:deplan_subscriptions_client/models/subscription.dart';
 import 'package:deplan_subscriptions_client/screens/app_init_controller.dart';
 import 'package:deplan_subscriptions_client/screens/settings_screen.dart';
