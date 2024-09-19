@@ -31,7 +31,8 @@ class DayGrid extends StatelessWidget {
                 daysInMonth,
                 (BuildContext context, int index) => daysGrid(context, index,
                     usage: currentMonthSubscriptions?.eventsByDay ?? [],
-                    currentMonthName: DateFormat('MMMM dd').format(date)));
+                    currentMonthName:
+                        "${DateFormat('MMMM').format(date)} ${index + 1}"));
           }
 
           if (snapshot.hasError) {
@@ -162,15 +163,15 @@ daysGrid(BuildContext context, int index,
             .map((entry) => TextSpan(
                   text: '${entry.key}: ${entry.value} \n',
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF6D7086),
                   ),
                 ))
             .toList(),
         style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
           color: Colors.black,
         ),
       ),

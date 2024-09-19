@@ -22,7 +22,7 @@ class SubsciptionsHome extends StatefulWidget {
 
 class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   DateTime selectedDate = DateTime.now();
-  late String paymentLink;
+  String? paymentLink;
 
   @override
   void initState() {
@@ -218,6 +218,10 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
 
 Widget buildBottomSheet(
     BuildContext context, PaymentInfo paymentInfo, String? paymentLink) {
+  if (paymentLink == null) {
+    return Container();
+  }
+
   return Container(
     decoration: const BoxDecoration(
       color: Color(0xffffffff),
