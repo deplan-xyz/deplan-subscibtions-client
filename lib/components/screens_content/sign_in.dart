@@ -1,4 +1,5 @@
 import 'package:deplan_subscriptions_client/components/apple_sign_in_button.dart';
+import 'package:deplan_subscriptions_client/models/subscription_query_data.dart';
 import 'package:deplan_subscriptions_client/screens/login_with_credentials.dart';
 import 'package:deplan_subscriptions_client/screens/signup_with_credentials.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
@@ -7,7 +8,8 @@ import 'package:flutter/material.dart';
 enum Mode { signUp, signIn }
 
 class SignInBody extends StatelessWidget {
-  const SignInBody({super.key});
+  final SubscriptionQueryData? subscriptionQueryData;
+  const SignInBody({super.key, this.subscriptionQueryData});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,10 @@ class SignInBody extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 52,
-                child: const EnterWithCredentialsButton(mode: Mode.signIn),
+                child: EnterWithCredentialsButton(
+                  mode: Mode.signIn,
+                  subscriptionQueryData: subscriptionQueryData,
+                ),
               ),
               const SizedBox(width: 10),
               const SizedBox(height: 20),
@@ -67,8 +72,10 @@ class SignInBody extends StatelessWidget {
 
 class EnterWithCredentialsButton extends StatelessWidget {
   final Mode mode;
+  final SubscriptionQueryData? subscriptionQueryData;
 
-  const EnterWithCredentialsButton({super.key, required this.mode});
+  const EnterWithCredentialsButton(
+      {super.key, required this.mode, this.subscriptionQueryData});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +85,9 @@ class EnterWithCredentialsButton extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const SignupWithCredentialsScreen(),
+            builder: (context) => SignupWithCredentialsScreen(
+              subscriptionQueryData: subscriptionQueryData,
+            ),
           ),
         );
       },
@@ -97,7 +106,9 @@ class EnterWithCredentialsButton extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const LoginWithCredentialsScreen(),
+            builder: (context) => LoginWithCredentialsScreen(
+              subscriptionQueryData: subscriptionQueryData,
+            ),
           ),
         );
       },

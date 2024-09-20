@@ -4,6 +4,8 @@ import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/components/custom_button.dart';
 import 'package:deplan_subscriptions_client/components/custom_testfield.dart';
 import 'package:deplan_subscriptions_client/components/ui_notifications.dart';
+import 'package:deplan_subscriptions_client/models/subscription_query_data.dart';
+import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
 import 'package:deplan_subscriptions_client/screens/login_with_credentials.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:deplan_subscriptions_client/utilities/validators.dart';
@@ -11,7 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignupWithCredentialsScreen extends StatefulWidget {
-  const SignupWithCredentialsScreen({super.key});
+  final SubscriptionQueryData? subscriptionQueryData;
+  const SignupWithCredentialsScreen({super.key, this.subscriptionQueryData});
 
   @override
   State<SignupWithCredentialsScreen> createState() =>
@@ -23,6 +26,8 @@ class _SignupWithCredentialsScreenState
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _repeatPassword = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -37,6 +42,9 @@ class _SignupWithCredentialsScreenState
       return;
     }
     try {
+      setState(() {
+        _isLoading = true;
+      });
       await Auth.signUpWithCredentials(_email.text, _password.text);
     } on FirebaseAuthException catch (e) {
       log(e.toString());
@@ -46,9 +54,24 @@ class _SignupWithCredentialsScreenState
         showSnackBar(context, 'Error signing up: ${e.code}');
       }
       rethrow;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
 
     if (context.mounted) {
+      if (widget.subscriptionQueryData != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmSubsciption(
+              subscriptionQueryData: widget.subscriptionQueryData!,
+            ),
+          ),
+        );
+      }
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SubsciptionsHome()),
@@ -119,9 +142,11 @@ class _SignupWithCredentialsScreenState
             const SizedBox(height: 30),
             CustomButton(
               label: "Signup",
-              onPressed: () async {
-                await _signup(context);
-              },
+              onPressed: _isLoading
+                  ? null
+                  : () async {
+                      await _signup(context);
+                    },
             ),
             const SizedBox(height: 15),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [

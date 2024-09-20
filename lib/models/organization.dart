@@ -34,7 +34,7 @@ class OrganizationSettings {
   final int treasury;
   final bool isContent;
   final bool isApp;
-  final int pricePerMonth;
+  final double pricePerMonth;
 
   OrganizationSettings({
     required this.treasury,

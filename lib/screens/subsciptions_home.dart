@@ -87,6 +87,11 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                   onChange: (month, date) {
                     setState(() {
                       selectedDate = date!;
+                      subscriptionsFuture = api.listSubscriptions(DateTime(
+                              selectedDate.year,
+                              selectedDate.month,
+                              selectedDate.day + 1)
+                          .millisecondsSinceEpoch);
                     });
                   }),
             ),

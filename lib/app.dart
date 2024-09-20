@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:deplan_subscriptions_client/models/subscription.dart';
+import 'package:deplan_subscriptions_client/models/subscription_query_data.dart';
 import 'package:deplan_subscriptions_client/screens/app_init_controller.dart';
 import 'package:deplan_subscriptions_client/screens/settings_screen.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
@@ -76,10 +77,12 @@ class _AppState extends State<App> {
         Routes.signin: (context) => const Signin(),
         Routes.subscriptionsHome: (context) => const SubsciptionsHome(),
         Routes.settings: (context) => const SettingsScreen(),
-        Routes.confirmSubscription: (context) => const ConfirmSubsciption(
-              orgId: 'default',
-              redirectUrl: 'default',
-              data: 'default',
+        Routes.confirmSubscription: (context) => ConfirmSubsciption(
+              subscriptionQueryData: SubscriptionQueryData(
+                orgId: 'default',
+                redirectUrl: 'default',
+                data: 'default',
+              ),
             ),
         Routes.subscriptionDetails: (context) => SubscriptionDetails(
               subscriptionData:

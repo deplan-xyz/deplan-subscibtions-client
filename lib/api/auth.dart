@@ -110,8 +110,10 @@ class Auth {
   }
 
   static User? get currentUser => FirebaseAuth.instance.currentUser;
-  static bool get isUserAuthenticated => currentUser != null;
-  static Future<String?>? get authToken => currentUser?.getIdToken();
+  static bool get isUserAuthenticated =>
+      FirebaseAuth.instance.currentUser != null;
+  static Future<String?>? get authToken =>
+      FirebaseAuth.instance.currentUser?.getIdToken();
 
   static onUserLoggedIn(Function(User) callback) {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {

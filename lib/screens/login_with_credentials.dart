@@ -2,13 +2,17 @@ import 'package:deplan_subscriptions_client/api/auth.dart';
 import 'package:deplan_subscriptions_client/components/custom_button.dart';
 import 'package:deplan_subscriptions_client/components/custom_testfield.dart';
 import 'package:deplan_subscriptions_client/components/ui_notifications.dart';
+import 'package:deplan_subscriptions_client/models/subscription_query_data.dart';
+import 'package:deplan_subscriptions_client/screens/confirm_subsciption.dart';
 import 'package:deplan_subscriptions_client/screens/signup_with_credentials.dart';
 import 'package:deplan_subscriptions_client/screens/subsciptions_home.dart';
 import 'package:deplan_subscriptions_client/utilities/validators.dart';
 import 'package:flutter/material.dart';
 
 class LoginWithCredentialsScreen extends StatefulWidget {
-  const LoginWithCredentialsScreen({super.key});
+  final SubscriptionQueryData? subscriptionQueryData;
+
+  const LoginWithCredentialsScreen({super.key, this.subscriptionQueryData});
 
   @override
   State<LoginWithCredentialsScreen> createState() =>
@@ -61,7 +65,20 @@ class _LoginWithCredentialsScreenState
       final user =
           await Auth.signInWithCredentials(_email.text, _password.text);
 
-      if (user != null) {
+      if (widget.subscriptionQueryData != null && context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmSubsciption(
+              subscriptionQueryData: widget.subscriptionQueryData!,
+            ),
+          ),
+        );
+
+        return;
+      }
+
+      if (user != null && context.mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(
