@@ -43,7 +43,7 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
     }
   }
 
-  _launchCallbackUrl(String url) async {
+  Future<void> _launchCallbackUrl(String url) async {
     if (kIsWeb) {
       await launchUrl(Uri.parse(url));
     }
@@ -158,11 +158,11 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
                             height: 52,
                             child: ElevatedButton(
                               onPressed: () async {
+                                _launchCallbackUrl(
+                                    widget.subscriptionQueryData.redirectUrl);
                                 await api.confirmSubscription(
                                     widget.subscriptionQueryData.orgId,
                                     widget.subscriptionQueryData.data);
-                                await _launchCallbackUrl(
-                                    widget.subscriptionQueryData.redirectUrl);
                                 _navigateToSubscriptionsHome();
                               },
                               style: ElevatedButton.styleFrom(
