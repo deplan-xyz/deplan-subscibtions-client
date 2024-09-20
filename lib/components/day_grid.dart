@@ -112,8 +112,39 @@ daysGrid(BuildContext context, int index,
     const Color(0xff2F984A),
     const Color(0xff216435),
   ];
+  final usageFontColors = [
+    Colors.black,
+    Colors.black,
+    Colors.black,
+    Colors.white,
+    Colors.white,
+  ];
   num summaryEventUsage =
       usageData.entries.map((entry) => entry.value).reduce((a, b) => a + b);
+
+  getUsageFontColor(num usage) {
+    if (usage == 0) {
+      return usageFontColors[0];
+    }
+
+    if (usage <= 1) {
+      return usageFontColors[1];
+    }
+
+    if (usage <= 3) {
+      return usageFontColors[2];
+    }
+
+    if (usage <= 5) {
+      return usageFontColors[3];
+    }
+
+    if (usage > 5) {
+      return usageFontColors[4];
+    }
+
+    return usageFontColors[0];
+  }
 
   getUsageColor(num usage) {
     if (usage == 0) {
@@ -176,7 +207,12 @@ daysGrid(BuildContext context, int index,
         ),
       ),
       child: Center(
-        child: Text(dayNumber.toString()),
+        child: Text(dayNumber.toString(),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: getUsageFontColor(summaryEventUsage),
+            )),
       ),
     ),
   );
