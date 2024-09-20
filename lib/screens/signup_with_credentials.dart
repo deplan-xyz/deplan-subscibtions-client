@@ -156,8 +156,10 @@ class _SignupWithCredentialsScreenState
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const LoginWithCredentialsScreen()),
+                      builder: (context) => LoginWithCredentialsScreen(
+                        subscriptionQueryData: widget.subscriptionQueryData,
+                      ),
+                    ),
                   );
                 },
                 child: const Text("Login", style: TextStyle(color: Colors.red)),

@@ -137,7 +137,9 @@ class _LoginWithCredentialsScreenState
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SignupWithCredentialsScreen(),
+                      builder: (context) => SignupWithCredentialsScreen(
+                        subscriptionQueryData: widget.subscriptionQueryData,
+                      ),
                     ),
                   );
                 },
