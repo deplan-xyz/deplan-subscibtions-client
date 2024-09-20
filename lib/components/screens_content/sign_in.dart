@@ -49,7 +49,8 @@ class SignInBody extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 52,
-                child: const AppleSignInButton(),
+                child: AppleSignInButton(
+                    subscriptionQueryData: subscriptionQueryData),
               ),
               const SizedBox(height: 20),
               SizedBox(
