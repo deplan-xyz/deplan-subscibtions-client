@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:deplan_subscriptions_client/api/base_api.dart';
 import 'package:deplan_subscriptions_client/app_storage.dart';
 import 'package:deplan_subscriptions_client/constants/common.dart';
@@ -50,6 +52,46 @@ class Auth {
     }
   }
 
+  static Future<void> signUpWithCredentials(
+      String email, String password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final deplanToken = await getDeplanAuthToken();
+      await appStorage.write(deplanAuthTokenKey, deplanToken);
+      Auth.deplanAuthToken = deplanToken;
+    } on FirebaseAuthException catch (e) {
+      print('Error signing up: ${e.code}');
+      rethrow;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<UserCredential?> signInWithCredentials(
+      String email, String password) async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      final deplanToken = await getDeplanAuthToken();
+      await appStorage.write(deplanAuthTokenKey, deplanToken);
+      Auth.deplanAuthToken = deplanToken;
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' ||
+          e.code == 'wrong-password' ||
+          e.code == 'invalid-credential') {
+        print('User not found or wrong credentials');
+      } else {
+        log('Error signing in: ${e.code}');
+      }
+      rethrow;
+    }
+  }
+
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     try {
@@ -68,8 +110,10 @@ class Auth {
   }
 
   static User? get currentUser => FirebaseAuth.instance.currentUser;
-  static bool get isUserAuthenticated => currentUser != null;
-  static Future<String?>? get authToken => currentUser?.getIdToken();
+  static bool get isUserAuthenticated =>
+      FirebaseAuth.instance.currentUser != null;
+  static Future<String?>? get authToken =>
+      FirebaseAuth.instance.currentUser?.getIdToken();
 
   static onUserLoggedIn(Function(User) callback) {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {

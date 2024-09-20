@@ -1,9 +1,15 @@
 import 'package:deplan_subscriptions_client/components/apple_sign_in_button.dart';
+import 'package:deplan_subscriptions_client/models/subscription_query_data.dart';
+import 'package:deplan_subscriptions_client/screens/login_with_credentials.dart';
+import 'package:deplan_subscriptions_client/screens/signup_with_credentials.dart';
 import 'package:deplan_subscriptions_client/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
+enum Mode { signUp, signIn }
+
 class SignInBody extends StatelessWidget {
-  const SignInBody({super.key});
+  final SubscriptionQueryData? subscriptionQueryData;
+  const SignInBody({super.key, this.subscriptionQueryData});
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +49,73 @@ class SignInBody extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 52,
-                child: const AppleSignInButton(),
+                child: AppleSignInButton(
+                    subscriptionQueryData: subscriptionQueryData),
               ),
-              const SizedBox(
-                height: 50,
+              const SizedBox(height: 20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 52,
+                child: EnterWithCredentialsButton(
+                  mode: Mode.signIn,
+                  subscriptionQueryData: subscriptionQueryData,
+                ),
               ),
+              const SizedBox(width: 10),
+              const SizedBox(height: 20),
             ],
           ),
         ),
       ],
     );
+  }
+}
+
+class EnterWithCredentialsButton extends StatelessWidget {
+  final Mode mode;
+  final SubscriptionQueryData? subscriptionQueryData;
+
+  const EnterWithCredentialsButton(
+      {super.key, required this.mode, this.subscriptionQueryData});
+
+  @override
+  Widget build(BuildContext context) {
+    final signUpButton = TextButton(
+      child: const Text('Register using email'),
+      onPressed: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignupWithCredentialsScreen(
+              subscriptionQueryData: subscriptionQueryData,
+            ),
+          ),
+        );
+      },
+    );
+
+    final signInButton = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: MAIN_COLOR,
+        textStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      onPressed: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginWithCredentialsScreen(
+              subscriptionQueryData: subscriptionQueryData,
+            ),
+          ),
+        );
+      },
+      child: const Text('Continue with email'),
+    );
+
+    return mode == Mode.signUp ? signUpButton : signInButton;
   }
 }

@@ -48,9 +48,9 @@ class OrganizationItemVertical extends StatelessWidget {
             color: TEXT_SECONDARY_ACCENT,
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 10),
         Text(
-          '\$${double.parse(subscriptionPrice).toStringAsFixed(2)} /mo',
+          '\$$subscriptionPrice /mo',
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w500,

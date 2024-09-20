@@ -24,9 +24,15 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   DateTime selectedDate = DateTime.now();
   String? paymentLink;
 
+  late Future<List<Subscription>> subscriptionsFuture;
+
   @override
   void initState() {
     super.initState();
+
+    subscriptionsFuture = api.listSubscriptions(
+        DateTime(selectedDate.year, selectedDate.month, selectedDate.day + 1)
+            .millisecondsSinceEpoch);
 
     api.getPaymentLink().then((paymentlinkResponse) {
       setState(() {
@@ -81,6 +87,11 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                   onChange: (month, date) {
                     setState(() {
                       selectedDate = date!;
+                      subscriptionsFuture = api.listSubscriptions(DateTime(
+                              selectedDate.year,
+                              selectedDate.month,
+                              selectedDate.day + 1)
+                          .millisecondsSinceEpoch);
                     });
                   }),
             ),
@@ -103,9 +114,7 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                   Expanded(
                     flex: 1,
                     child: FutureBuilder<List<Subscription>>(
-                      future: api.listSubscriptions(DateTime(selectedDate.year,
-                              selectedDate.month, selectedDate.day + 1)
-                          .millisecondsSinceEpoch),
+                      future: subscriptionsFuture,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -161,30 +170,43 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                         }
 
                         final subscriptions = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: subscriptions.length,
-                          itemBuilder: (context, index) {
-                            final subscription = subscriptions[index];
-                            return SubscriptionCard(
-                              title: subscription.name,
-                              planPrice: subscription.planPrice,
-                              userPays: subscription.youPay,
-                              usagePercentage: subscription.usage,
-                              avatar: subscription.logo,
-                              orgId: subscription.orgId,
-                              onTap: (subscription) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SubscriptionDetails(
-                                      subscriptionData: subscription,
-                                      selectedDate: selectedDate,
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            setState(() {
+                              subscriptionsFuture = api.listSubscriptions(
+                                  DateTime(
+                                          selectedDate.year,
+                                          selectedDate.month,
+                                          selectedDate.day + 1)
+                                      .millisecondsSinceEpoch);
+                            });
                           },
+                          child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: subscriptions.length,
+                            itemBuilder: (context, index) {
+                              final subscription = subscriptions[index];
+                              return SubscriptionCard(
+                                title: subscription.name,
+                                planPrice: subscription.planPrice,
+                                userPays: subscription.youPay,
+                                usagePercentage: subscription.usage,
+                                avatar: subscription.logo,
+                                orgId: subscription.orgId,
+                                onTap: (subscription) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SubscriptionDetails(
+                                        subscriptionData: subscription,
+                                        selectedDate: selectedDate,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
@@ -251,15 +273,7 @@ Widget buildBottomSheet(
               ),
             ),
             onPressed: () async {
-              try {
-                if (paymentLink != null) {
-                  await launchUrl(Uri.parse(paymentLink));
-                } else {
-                  print('Paymment link is not defined');
-                }
-              } catch (e) {
-                print('Error when requesting payment link: $e');
-              }
+              await launchUrl(Uri.parse(paymentLink));
             },
             child: Row(
               mainAxisSize: MainAxisSize.max,
