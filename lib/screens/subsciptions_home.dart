@@ -170,30 +170,43 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                         }
 
                         final subscriptions = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: subscriptions.length,
-                          itemBuilder: (context, index) {
-                            final subscription = subscriptions[index];
-                            return SubscriptionCard(
-                              title: subscription.name,
-                              planPrice: subscription.planPrice,
-                              userPays: subscription.youPay,
-                              usagePercentage: subscription.usage,
-                              avatar: subscription.logo,
-                              orgId: subscription.orgId,
-                              onTap: (subscription) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SubscriptionDetails(
-                                      subscriptionData: subscription,
-                                      selectedDate: selectedDate,
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            setState(() {
+                              subscriptionsFuture = api.listSubscriptions(
+                                  DateTime(
+                                          selectedDate.year,
+                                          selectedDate.month,
+                                          selectedDate.day + 1)
+                                      .millisecondsSinceEpoch);
+                            });
                           },
+                          child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: subscriptions.length,
+                            itemBuilder: (context, index) {
+                              final subscription = subscriptions[index];
+                              return SubscriptionCard(
+                                title: subscription.name,
+                                planPrice: subscription.planPrice,
+                                userPays: subscription.youPay,
+                                usagePercentage: subscription.usage,
+                                avatar: subscription.logo,
+                                orgId: subscription.orgId,
+                                onTap: (subscription) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SubscriptionDetails(
+                                        subscriptionData: subscription,
+                                        selectedDate: selectedDate,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
