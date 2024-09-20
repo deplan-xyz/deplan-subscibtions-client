@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:deplan_subscriptions_client/api/base_api.dart';
 import 'package:deplan_subscriptions_client/app_storage.dart';
 import 'package:deplan_subscriptions_client/constants/common.dart';
@@ -47,6 +49,46 @@ class Auth {
     } else {
       await FirebaseAuth.instance.signInWithProvider(appleProvider);
       await _getAndSetDeplanAuthToken();
+    }
+  }
+
+  static Future<void> signUpWithCredentials(
+      String email, String password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final deplanToken = await getDeplanAuthToken();
+      await appStorage.write(deplanAuthTokenKey, deplanToken);
+      Auth.deplanAuthToken = deplanToken;
+    } on FirebaseAuthException catch (e) {
+      print('Error signing up: ${e.code}');
+      rethrow;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<UserCredential?> signInWithCredentials(
+      String email, String password) async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      final deplanToken = await getDeplanAuthToken();
+      await appStorage.write(deplanAuthTokenKey, deplanToken);
+      Auth.deplanAuthToken = deplanToken;
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found' ||
+          e.code == 'wrong-password' ||
+          e.code == 'invalid-credential') {
+        print('User not found or wrong credentials');
+      } else {
+        log('Error signing in: ${e.code}');
+      }
+      rethrow;
     }
   }
 

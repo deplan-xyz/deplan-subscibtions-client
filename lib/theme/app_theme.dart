@@ -150,3 +150,4 @@ const Color BTN_GRAY_GB = COLOR_LIGHT_GRAY3;
 const Color TEXT_MAIN = Color(0xff11243E);
 const Color TEXT_SECONDARY = Color(0xff6B6B6B);
 const Color TEXT_SECONDARY_ACCENT = Color(0xff88919E);
+const Color MAIN_COLOR = Color(0xffAA32E3);

@@ -24,9 +24,15 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
   DateTime selectedDate = DateTime.now();
   String? paymentLink;
 
+  late Future<List<Subscription>> subscriptionsFuture;
+
   @override
   void initState() {
     super.initState();
+
+    subscriptionsFuture = api.listSubscriptions(
+        DateTime(selectedDate.year, selectedDate.month, selectedDate.day + 1)
+            .millisecondsSinceEpoch);
 
     api.getPaymentLink().then((paymentlinkResponse) {
       setState(() {
@@ -103,9 +109,7 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                   Expanded(
                     flex: 1,
                     child: FutureBuilder<List<Subscription>>(
-                      future: api.listSubscriptions(DateTime(selectedDate.year,
-                              selectedDate.month, selectedDate.day + 1)
-                          .millisecondsSinceEpoch),
+                      future: subscriptionsFuture,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -251,15 +255,7 @@ Widget buildBottomSheet(
               ),
             ),
             onPressed: () async {
-              try {
-                if (paymentLink != null) {
-                  await launchUrl(Uri.parse(paymentLink));
-                } else {
-                  print('Paymment link is not defined');
-                }
-              } catch (e) {
-                print('Error when requesting payment link: $e');
-              }
+              await launchUrl(Uri.parse(paymentLink));
             },
             child: Row(
               mainAxisSize: MainAxisSize.max,
