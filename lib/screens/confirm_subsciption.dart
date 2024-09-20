@@ -161,7 +161,7 @@ class _ConfirmSubsciptionState extends State<ConfirmSubsciption> {
                                 await api.confirmSubscription(
                                     widget.subscriptionQueryData.orgId,
                                     widget.subscriptionQueryData.data);
-                                _launchCallbackUrl(
+                                await _launchCallbackUrl(
                                     widget.subscriptionQueryData.redirectUrl);
                                 _navigateToSubscriptionsHome();
                               },
