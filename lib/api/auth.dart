@@ -32,14 +32,14 @@ class Auth {
     }
   }
 
-  static Future<void> signInWithApple() async {
+  static Future<void> signInWithApple(OAuthCredential credentials) async {
     final appleProvider = OAuthProvider("apple.com")
       ..addScope('name')
       ..addScope('email');
 
     if (kIsWeb) {
       try {
-        await FirebaseAuth.instance.signInWithPopup(appleProvider);
+        await await FirebaseAuth.instance.signInWithCredential(credentials);
       } on FirebaseAuthException catch (err) {
         print("Auth error: ${err.code}");
         rethrow;

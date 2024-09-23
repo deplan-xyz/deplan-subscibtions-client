@@ -210,7 +210,7 @@ daysGrid(BuildContext context, int index,
         child: Text(dayNumber.toString(),
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w400,
               color: getUsageFontColor(summaryEventUsage),
             )),
       ),

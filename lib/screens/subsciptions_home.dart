@@ -128,18 +128,6 @@ class _SubsciptionsHomeState extends State<SubsciptionsHome> {
                                   child: Text(
                                       'Error: Please check your internet connection'));
                             }
-
-                            // handle 401 unauthorized
-                            if (dioError.response?.statusCode == 401) {
-                              Auth.signInWithApple().catchError((error) {
-                                if (context.mounted) {
-                                  shouwAuthErrorDialog(
-                                      context: context, error: error);
-                                }
-                              });
-                              return const Center(
-                                  child: Text('Authenticating...'));
-                            }
                           }
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
